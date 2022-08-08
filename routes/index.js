@@ -11,7 +11,17 @@ function checkFireBase(){
 /* GET home page. */
 router.get('/', function(req, res, next) {
   checkFireBase();
-  res.render('index', { title: 'Express' });
+  firebaseAdmin.ref().set('Hello Firebase');
+  firebaseAdmin.ref().set({home: {city: 'london', size: 100}, home2: {city: 'new Taipei', size: 98}});
+  firebaseAdmin.ref('home/city').set('Taipei');
+
+  let city = firebaseAdmin.ref('home/city');
+  city.once('value', function(snapshot){
+    let data = snapshot.val();
+    res.render('index', { title: 'Express',  data: data});
+
+  })
+
 });
 
 module.exports = router;
